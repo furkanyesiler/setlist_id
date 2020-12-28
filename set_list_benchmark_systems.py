@@ -22,6 +22,9 @@ if 'NUM_THREADS' in os.environ:
     tf.config.threading.set_intra_op_parallelism_threads(int(NUM_THREADS))
     tf.config.threading.set_inter_op_parallelism_threads(int(NUM_THREADS))
 
+# for ignoring tensorflow info
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
@@ -375,7 +378,7 @@ if __name__ == '__main__':
                           for i in range(len(ref_feats))]
             ref_feats = proc_feats
 
-    print('Feats loaded.')
+    print('Reference features/embeddings are loaded.')
 
     query_paths = []
     query_names = []

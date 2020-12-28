@@ -240,30 +240,44 @@ def analyze_matches(res, gt, is_print=False):
     :param is_print: whether to print the evaluation metrics
     :return: a pandas dataframe with the analyzed results
     """
-    results = []
-    tp = 0
-    fn = 0
-    fp = 0
-    det_len_global = 0
-    det_dict = {}
-    det_dict_fn = {}
+    results = []  # empty list to append results
+    tp = 0  # total number of true positives
+    fn = 0  # total number of false negatives
+    fp = 0  # total number of false positives
+    det_len_global = 0  # total detected length
+    det_dict = {}  # dict to store the detected length per correct match
+    det_dict_fn = {}  # dict to store all matches that exist in annotations
+
+    # iterate over all the matches
     for i in range(res.iloc[:, 0].size):
-        status = 'fp'
-        fp_doubt = 0
-        query = res.iloc[i, 0]
-        start = float(res.iloc[i, 1])
-        end = float(res.iloc[i, 2])
-        ref = res.iloc[i, 3]
-        ref_start = res.iloc[i, 4]
-        ref_end = res.iloc[i, 5]
-        score = res.iloc[i, 6]
-        det_len_tmp = 0
+        status = 'fp'  # default status
+        fp_doubt = 0  #
+        query = res.iloc[i, 0]  # query concert
+        start = float(res.iloc[i, 1])  # start timestamp of the query window
+        end = float(res.iloc[i, 2])  # end timestamp of the query window
+        ref = res.iloc[i, 3]  # metadata of the match
+        ref_start = res.iloc[i, 4]  # start timestamp of the returned match
+        ref_end = res.iloc[i, 5]  # end timestamp of the returned match
+        score = res.iloc[i, 6]  # distance/similarity score
+        det_len_tmp = 0  # temporary detected length of the match
         if query in gt:  # whether the concert is in ground truth
             if ref in gt[query]:  # whether the reference is in the concert
+                # if the reference is in the concert, iterate over all the
+                # annotations of that reference in the concert (the same song
+                # can be played multiple times in a concert)
                 for item in gt[query][ref]:
+
+                    # whether the reference timestamps overlaps the annotation
                     if end >= item[0] and start <= item[1]:
+                        # temporary detected length
                         det_len_tmp = min(end, item[1]) - max(start, item[0])
+
+                        # add the temporary detected length to global
                         det_len_global += det_len_tmp
+
+                        # whether the reference is already accounted for.
+                        # used for not counting the same interval
+                        # multiple times
                         if ref in det_dict:
                             if det_dict[ref][1] > item[0] and \
                                     det_dict[ref][0] <= item[1]:
@@ -274,24 +288,43 @@ def analyze_matches(res, gt, is_print=False):
                                     det_dict[ref] = (
                                     min(det_dict[ref][0], max(start, item[0])),
                                     max(det_dict[ref][1], min(end, item[1])))
+
+                        # if the reference is not encountered before, add the
+                        # detected length to the det_dict
                         else:
                             det_dict[ref] = (max(start, item[0]),
                                              min(end, item[1]))
+
+                        # indicate that this reference is encountered in
+                        # annotations
                         if ref not in det_dict_fn:
                             det_dict_fn[ref] = []
                         det_dict_fn[ref].append(item)
+
+                        # increase the number of true positives and change
+                        # the status
                         if status != 'tp':
                             tp += 1
                             status = 'tp'
+
+                    # if the reference doesn't overlap the annotation, put it
+                    # as doubt (it may overlap another annotation in
+                    # the ground truth)
                     else:
                         fp_doubt = 1
+                # if we doubted a reference and it didn't turn out a true
+                # positive, increase the number of false positives
                 if fp_doubt == 1 and status != 'tp':
                     det_len_tmp = 0
                     fp += 1
 
+            # if a match is not in annotations for that concert, put it as a
+            # false positive
             else:
                 fp += 1
                 det_len_tmp = 0
+
+            # collect all the analyzed matches in the results list
             results.append((query, start, end, ref, ref_start, ref_end, score,
                             status, det_len_tmp))
         else:
@@ -300,6 +333,7 @@ def analyze_matches(res, gt, is_print=False):
     total_annotation_duration = 0
     total_annotations = 0
 
+    # fo over all the annotations to detect false negatives
     for query in gt.keys():
         for ref in gt[query].keys():
             for item in gt[query][ref]:
@@ -316,6 +350,7 @@ def analyze_matches(res, gt, is_print=False):
                         results.append(
                             (query, it[0], it[1], ref, 0, 0, 0, 'fn', 0))
                         fn += 1
+
     if is_print:
         print('True positives: {}\n'
               'False positives: {}\n'
