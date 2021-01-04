@@ -20,6 +20,8 @@ This repository contains the instructions for downloading and using the new ASID
 
 We use 10 concerts (14.3 hours) as a separate development set to for hyperparameter tuning, and to train a classifier for the match revision step. The references for the development set include 180 songs. The remaining 65 concerts (85.2 hours) and the related reference set is used for the main results. The total number of annotated segments for the evaluation set is 1,138, with a duration of 80.6 hours.
 
+The pre-extracted features and the metadata are licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
 ### 1.1 - Downloading the dataset
 
 Currently, the data is hosted on a Google Drive folder. You can download it using Python as follows: 
@@ -210,6 +212,8 @@ For any questions you may have, feel free to create an issue or contact [me](mai
 
 ## License
 The code in this repository is licensed under [Affero GPL v3](https://www.gnu.org/licenses/agpl-3.0.en.html).
+
+The pre-extracted features and the metadata for ASID are licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 ## References
 Please cite our reference if you plan to use the code in this repository:
