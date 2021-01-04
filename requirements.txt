@@ -2,6 +2,8 @@ intervaltree
 librosa==0.6.2
 essentia
 keras==2.3.1
-llvmlite==0.31.0
+llvmlite==0.33.0
 tensorflow-cpu==2.2.0
 pandas==0.25.3
+xlrd == 1.2.0
+numba==0.48.0

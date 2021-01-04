@@ -431,7 +431,7 @@ if __name__ == '__main__':
                         '--res_val_filename',
                         type=str,
                         help='Path to the results file for '
-                             'the validation set.')
+                             'the development set.')
     parser.add_argument('-re',
                         '--res_eval_filename',
                         type=str,
@@ -441,7 +441,7 @@ if __name__ == '__main__':
                         '--gt_val_filename',
                         type=str,
                         help='Path to the ground truth annotations for '
-                             'the validation set.')
+                             'the development set.')
     parser.add_argument('-ge',
                         '--gt_eval_filename',
                         type=str,
