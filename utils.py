@@ -156,8 +156,7 @@ def create_re_move_model():
     lin = K.layers.Dense(256, use_bias=False)(sque)
     bn = K.layers.BatchNormalization(center=False, scale=False)(lin)
     re_move = K.models.Model(inp, [bn])
-    re_move.load_weights(os.path.join(os.path.dirname(__file__),
-                                      're-move_256_keras.h5'))
+    re_move.load_weights('./data/re-move_256_keras.h5')
 
     return re_move
 
