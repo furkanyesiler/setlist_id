@@ -51,7 +51,7 @@ optional arguments:
                       either download from Google Drive (gdrive) or from
                       Zenodo (zenodo) (default: gdrive)
 --outputdir OUTPUTDIR
-                      directory to store the dataset (default: ./)
+                      directory to store the dataset (default: ./data/)
 --unpack              unpack the zip files (default: False)
 --remove              remove zip files after unpacking (default: False)
 ```
@@ -65,7 +65,11 @@ python download_asid.py --source gdrive --outputdir ./data/ --unpack --remove
 ### 1.2 - Contents
 When you use the `download_asid.py` script, following files/folders will be downloaded:
 
-* **ASID-Annotations.xlsx:** This file contains the annotations in a "human-readable" way. You can open the file with applications that read spreadsheets, or with Python (using the `pandas` library). An example of how to read the file using Python can be found in `ASID-annotations_notebook.ipynb`.
+* **ASID_metadata/ASID-Annotations.xlsx:** This file contains the annotations in a "human-readable" way. You can open the file with applications that read spreadsheets, or with Python (using the `pandas` library). An example of how to read the file using Python can be found in `ASID-annotations_notebook.ipynb`.
+
+* **ASID_metadata/ASID_eval_groundtruth.csv:** The ground truth annotations for the concerts in the evaluation subset. This file is a parsed version of the `ASID-Annotations.xlsx` file for our evaluation script.
+
+* **ASID_metadata/ASID_development_groundtruth.csv:** The ground truth annotations for the concerts in the development subset. This file is a parsed version of the `ASID-Annotations.xlsx` file for our evaluation script.
 
 * **ASID_eval_concerts:** The pre-extracted cremaPCP features for the concerts in the evaluation subset.
 
@@ -76,10 +80,6 @@ When you use the `download_asid.py` script, following files/folders will be down
 * **ASID_development_references:** The pre-extracted cremaPCP features for the reference songs in the development subset.
 
 * **ASID_onsets:** The pre-extracted onset strength envelops for both the concerts and the reference songs in both the evaluation and the development subsets.
-
-* **ASID_eval_groundtruth.csv:** The ground truth annotations for the concerts in the evaluation subset. This file is a parsed version of the `ASID-Annotations.xlsx` file for our evaluation script.
-
-* **ASID_development_groundtruth.csv:** The ground truth annotations for the concerts in the development subset. This file is a parsed version of the `ASID-Annotations.xlsx` file for our evaluation script.
 
 ## 2 - Replicating the experiments
 The procedure for replicating the experiments consists of 2 stages:
@@ -102,10 +102,10 @@ pip install -r requirements.txt
 The recommended inputs for the `setlist_benchmark_systems.py` script are `.lst` files that contain queries and references in each line. After downloading the dataset, you can run the following commands from the main directory:
 
 ```bash
-ls -d ./data/ASID_development_concerts/* > ./data/development_queries.lst
-ls -d ./data/ASID_development_references/* > ./data/development_references.lst
-ls -d ./data/ASID_eval_concerts/* > ./data/eval_queries.lst
-ls -d ./data/ASID_eval_references/* > ./data/eval_references.lst
+ls -d ./data/ASID_development_concerts/*.npy > ./data/development_queries.lst
+ls -d ./data/ASID_development_references/*.npy > ./data/development_references.lst
+ls -d ./data/ASID_eval_concerts/*.npy > ./data/eval_queries.lst
+ls -d ./data/ASID_eval_references/*.npy > ./data/eval_references.lst
 ```
 
 ### 2.3 - Extracting the raw results
@@ -203,8 +203,8 @@ Example usage:
 ```bash
 python create_result_reports.py -rv ./development_results_re-move_120_30.csv \
                                 -re ./eval_results_re-move_120_30.csv \
-                                -gv ./data/ASID_development_groundtruth.csv \
-                                -ge ./data/ASID_eval_groundtruth.csv
+                                -gv ./data/ASID_metadata/ASID_development_groundtruth.csv \
+                                -ge ./data/ASID_metadata/ASID_eval_groundtruth.csv
 ```
 
 ## Questions
