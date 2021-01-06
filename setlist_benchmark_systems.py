@@ -122,7 +122,7 @@ def prepare_output_single_query(query_feat, query_name, references,
 
     # loading the onset strength if 2dftm is used
     if system == '2dftm':
-        onset_file = '/data/ASID_onsets/{}_onset.npy'.format(query_name)
+        onset_file = './data/ASID_onsets/{}_onset.npy'.format(query_name)
         onset_env = np.load(onset_file)
         # the onset strength is computed using sample rate 22050 and
         # hop size 512
@@ -255,7 +255,7 @@ def get_2dftm_ref(feat, filename):
     :param filename: filename of the reference song
     :return: 2DFTM embedding of the input
     """
-    onset_file = '/data/ASID_onsets/{}_onset.npy'.format(filename)
+    onset_file = './data/ASID_onsets/{}_onset.npy'.format(filename)
     onset_env = np.load(onset_file)
     _, beats = librosa.beat.beat_track(onset_envelope=onset_env,
                                        units='time')
@@ -277,10 +277,10 @@ def get_re_move_emb(feat, feat_name):
     :return: Re-MOVE embedding of the input
     """
     if os.path.exists(
-            os.path.join('/data/jamendo_remove/{}_remove.npy'.format(
+            os.path.join('./data/jamendo_remove/{}_remove.npy'.format(
                 feat_name))):
         return np.load(
-            os.path.join('/data/jamendo_remove/{}_remove.npy'.format(
+            os.path.join('./data/jamendo_remove/{}_remove.npy'.format(
                 feat_name)))
     else:
         model = create_re_move_model()
