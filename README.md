@@ -65,7 +65,7 @@ python download_asid.py --source gdrive --outputdir ./data/ --unpack --remove
 ### 1.2 - Contents
 When you use the `download_asid.py` script, following files/folders will be downloaded:
 
-* **ASID_metadata/ASID-Annotations.xlsx:** This file contains the annotations in a "human-readable" way. You can open the file with applications that read spreadsheets, or with Python (using the `pandas` library). An example of how to read the file using Python can be found in `ASID-annotations_notebook.ipynb`.
+* **ASID_metadata/ASID-Annotations.xlsx:** This file contains the annotations in a "human-readable" way. You can open the file with applications that read spreadsheets, or with Python (using the `pandas` library). An example of how to read the file using Python can be found in [ASID-annotations_notebook.ipynb](https://github.com/furkanyesiler/setlist_id/blob/master/ASID-annotations_notebook.ipynb).
 
 * **ASID_metadata/ASID_eval_groundtruth.csv:** The ground truth annotations for the concerts in the evaluation subset. This file is a parsed version of the `ASID-Annotations.xlsx` file for our evaluation script.
 
