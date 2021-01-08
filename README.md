@@ -1,6 +1,6 @@
 # Investigating the efficacy of music version retrieval systems for setlist identification
 
-This repository contains the instructions for downloading and using the new ASID dataset and the code used for the experiments described in the following paper:
+This repository contains the instructions for downloading and using the new ASID dataset and the code used for the experiments described [in the following paper](https://arxiv.org/abs/2101.02098):
 
 > F. Yesiler, E. Molina, J. Serrà, and E. Gómez. Investigating the efficacy of music version retrieval systems for setlist identification., 2021.
 
